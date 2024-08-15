@@ -56,7 +56,8 @@
                               </div>
                            </div>
                            <div class="card-body">
-                              <form>
+                              <form method="POST" action="{{route('profile.update_personal_info')}}" id="personalInfoForm">
+                                 @csrf
                                  <div class="form-group row align-items-center">
                                     <div class="col-md-12">
                                        <div class="profile-img-edit">
@@ -88,15 +89,15 @@
                                     <div class="form-group col-sm-6">
                                        <label class="d-block">Gender:</label>
                                        <div class="custom-control custom-radio custom-control-inline">
-                                          <input type="radio" id="gender1" name="gender" class="custom-control-input">
+                                          <input type="radio" id="gender1" name="gender" class="custom-control-input" value="M">
                                           <label class="custom-control-label" for="gender1"> Male </label>
                                        </div>
                                        <div class="custom-control custom-radio custom-control-inline">
-                                          <input type="radio" id="gender2" name="gender" class="custom-control-input">
+                                          <input type="radio" id="gender2" name="gender" class="custom-control-input" value="F">
                                           <label class="custom-control-label" for="gender2"> Female </label>
                                        </div>
                                        <div class="custom-control custom-radio custom-control-inline">
-                                        <input type="radio" id="gender3" name="gender" class="custom-control-input">
+                                        <input type="radio" id="gender3" name="gender" class="custom-control-input" value="P">
                                         <label class="custom-control-label" for="gender3"> Prefer not to say </label>
                                      </div>
                                     </div>

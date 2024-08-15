@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdatePersonalInfoRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,5 +31,11 @@ class AccountController extends Controller
         ];
 
         return view('client.edit_profile',$viewData);
+    }
+
+    public function updateProfilePersonalInfo(UpdatePersonalInfoRequest $request){
+        
+        $validatedData = $request->validated();
+        dd($validatedData);
     }
 }

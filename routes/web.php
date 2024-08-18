@@ -19,5 +19,7 @@ Route::middleware('auth')->controller(AccountController::class)->group(function(
     Route::get('my-profile','myProfileSection')->name('profile.view');
     Route::get('edit-profile','editProfileSection')->name('profile.edit');
     Route::post('update-profile-personal-info','updateProfilePersonalInfo')->name('profile.update_personal_info');
+    Route::post('update-profile-password','updateProfilePasswordDetails')->name('profile.update_password');
+    Route::post('update-contact','updateProfileContactDetails')->name('profile.update_contact');
 });
  

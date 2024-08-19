@@ -5,7 +5,7 @@
                 alt="logo">
             <img src="{{ asset('templates/datum/images/logo-dark.png') }}"
                 class="img-fluid rounded-normal d-none sidebar-light-img" alt="logo">
-            <span>Datum</span>
+            <span>Budget Buddy</span>
         </a>
         <div class="side-menu-bt-sidebar-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="text-light wrapper-menu" width="30" fill="none"
@@ -30,21 +30,20 @@
                         <p class="mb-0 w-10 badge badge-pill badge-primary">6</p>
                     </a>
                 </li>
-                <li class="px-3 pt-3 pb-2">
+                {{-- <li class="px-3 pt-3 pb-2">
                     <span class="text-uppercase small font-weight-bold">Pages</span>
-                </li>
+                </li> --}}
                 <li class=" sidebar-layout">
-                    <a href="../app/user-profile.html" class="svg-icon">
+                    <a href="{{route('category_management.list')}}" class="svg-icon">
                         <i class="">
-                            <svg class="svg-icon" id="iq-user-1-1" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </i><span class="ml-2">User Profile</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+                            </svg>                              
+                        </i><span class="ml-2">Category Management</span>
                     </a>
                 </li>
-                <li class="sidebar-layout">
+                {{-- <li class="sidebar-layout">
                     <a href="#app1" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
                         <i>
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"
@@ -115,8 +114,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class="sidebar-layout">
+                </li> --}}
+                {{-- <li class="sidebar-layout">
                     <a href="#app6" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
                         <i>
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
@@ -157,8 +156,8 @@
                             </a>
                         </li>
                     </ul>
-                </li>
-                <li class=" sidebar-layout">
+                </li> --}}
+                {{-- <li class=" sidebar-layout">
                     <a href="../backend/pages-comingsoon.html" class="svg-icon">
                         <i class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
@@ -168,8 +167,8 @@
                             </svg>
                         </i><span class="ml-2">Comingsoon</span>
                     </a>
-                </li>
-                <li class=" sidebar-layout">
+                </li> --}}
+                {{-- <li class=" sidebar-layout">
                     <a href="../backend/pages-maintenance.html" class="svg-icon">
                         <i class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
@@ -179,8 +178,8 @@
                             </svg>
                         </i><span class="ml-2">Maintenance</span>
                     </a>
-                </li>
-                <li class=" sidebar-layout">
+                </li> --}}
+                {{-- <li class=" sidebar-layout">
                     <a href="../backend/pages-blank-page.html" class="svg-icon">
                         <i class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
@@ -190,8 +189,8 @@
                             </svg>
                         </i><span class="ml-2">Blank Page</span>
                     </a>
-                </li>
-                <li class=" sidebar-layout">
+                </li> --}}
+                {{-- <li class=" sidebar-layout">
                     <a href="../backend/pages-faq.html" class="svg-icon">
                         <i class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
@@ -201,8 +200,8 @@
                             </svg>
                         </i><span class="ml-2">Faq</span>
                     </a>
-                </li>
-                <li class=" sidebar-layout">
+                </li> --}}
+                {{-- <li class=" sidebar-layout">
                     <a href="../backend/pricing.html" class="svg-icon">
                         <i class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none"
@@ -212,7 +211,7 @@
                             </svg>
                         </i><span class="ml-2">Pricing</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class=" sidebar-layout">
                     <a href="../backend/timeline.html" class="svg-icon">
                         <i class="">

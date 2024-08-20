@@ -25,10 +25,15 @@ Route::middleware('auth')->controller(AccountController::class)->group(function(
 });
 
 Route::middleware('auth')->controller(CategoryController::class)->group(function(){
+    Route::get('populate-default-categories','populateDefaultCategories')->name('category_management.populate_defaults');
     Route::get('category-management','listSection')->name('category_management.list');
     Route::post('categories-list','getCategoriesList')->name('category_management.get_list');
     Route::get('activate-category/{category_id}','activateCategory')->name('category_management.activate_category');
     Route::get('deactivate-category/{category_id}','deactivateCategory')->name('category_management.deactivate_category');
     Route::get('delete-category/{category_id}','deleteCategory')->name('category_management.delete_category');
+    Route::get('edit-category/{category_id}','editCategorySection')->name('category_management.edit_category');
+    Route::post('update-category/{category_id}','updateCategoryDetails')->name('category_management.update_category');
+    Route::get('add-category','addCategorySection')->name('category_management.add_category');
+    Route::post('create-category','createCategoryDetails')->name('category_management.create_category');
 });
  

@@ -16,6 +16,7 @@ class Category extends Eloquent
 
     protected $table = 'categories';
     public $timestamps = false;
+    protected $primaryKey = '_id';
 
     /**
      * The attributes that are mass assignable.

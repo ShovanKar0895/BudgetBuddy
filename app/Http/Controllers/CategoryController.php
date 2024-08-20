@@ -2,16 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
-
+use MongoDB\BSON\ObjectId;
 class CategoryController extends Controller
 {
     private CategoryService $categoryService;
  
     public function __construct(CategoryService $categoryService){
         $this->categoryService = $categoryService;
+    }
+
+    public function populateDefaultCategories(Request $request){
+
+        $userId = Auth::id();
+        $this->categoryService->populate_defaults_for_user($userId);
     }
 
     public function listSection(Request $request){
@@ -28,6 +38,8 @@ class CategoryController extends Controller
 
     public function getCategoriesList(Request $request){
         // echo "<pre>";echo "<b>Total Response with ajax : </b>";dump($request->post());echo "</pre>";echo "<br><br>";
+
+        $userId = new ObjectId(Auth::id());
 
         $draw = $request->post('draw');
         $row = $request->post('start');
@@ -79,14 +91,16 @@ class CategoryController extends Controller
         }
 
         $fetchListCountConditions = [
+            'user_id' => $userId,
             'search_by' => $searchValue,
         ];
         // $totalUserCount = User::fetchAllUsersCount($fetchListCountConditions);
-        $totalUserCount = $this->categoryService->count();
+        $totalUserCount = $this->categoryService->count($fetchListCountConditions);
         //  echo "<pre>";echo "<b>Total Users : </b>";dump($totalUserCount);echo "</pre>";echo "<br><br>";
         //  die();
 
         $fetchListConditions = [
+            'user_id' => $userId,
             'search_by' => $searchValue,
             'ordering_column' => $columnName,
             'ordering_column_by' => $columnSortOrder,
@@ -110,6 +124,7 @@ class CategoryController extends Controller
                     'urls' => [
                         'activation_url' => route('category_management.activate_category',['category_id'=> $userDetails->id]),
                         'deactivation_url' => route('category_management.deactivate_category',['category_id'=> $userDetails->id]),
+                        'edit_url' => route('category_management.edit_category',['category_id' => $userDetails->id]),
                         'deletion_url' => route('category_management.delete_category',['category_id'=> $userDetails->id]),
                     ],
                 ]);
@@ -177,6 +192,73 @@ class CategoryController extends Controller
         $affectedCategories = $this->categoryService->update($updateData,$encryptedUserId);
 
         $request->session()->flash('success','Category details successfully deleted!');
+        return redirect()->route('category_management.list');
+    }
+
+    public function editCategorySection(Request $request){
+
+        $categoryId = $request->route('category_id');
+        $user = Auth::user();
+        $user->full_name = $user->first_name.' '.$user->last_name;
+
+        $category = $this->categoryService->fetch($categoryId);
+
+        $viewData = [
+            'section' => 'Category Management',
+            'user_details' => $user,
+            'category_details' => $category,
+        ];
+
+        // dd($viewData);
+
+
+        return view('client.edit_category',$viewData);
+    }
+
+    public function updateCategoryDetails(UpdateCategoryRequest $request){
+        
+        $userId = Auth::id();
+        $categoryId = $request->route('category_id');
+
+        $validatedData = $request->validated();
+        $validatedData['remarks'] = Str::of($validatedData['remarks'])->explode(',')->toArray();
+
+        // dd($validatedData);
+
+        $affectedUsers = $this->categoryService->update($validatedData,$categoryId);
+        
+        $request->session()->flash('success', 'Category details succesfully updated!');
+        return redirect()->route('category_management.list');
+    }
+
+    public function addCategorySection(Request $request){
+
+        $user = Auth::user();
+        $user->full_name = $user->first_name.' '.$user->last_name;
+
+        $viewData = [
+            'section' => 'Category Management',
+            'user_details' => $user,
+        ];
+
+        // dd($viewData);
+
+
+        return view('client.add_category',$viewData);
+    }
+
+    public function createCategoryDetails(AddCategoryRequest $request){
+
+        $userId = Auth::id();
+
+        $validatedData = $request->validated();
+        $validatedData['remarks'] = Str::of($validatedData['remarks'])->explode(',')->toArray();
+
+        // dd($validatedData);
+
+        $affectedUsers = $this->categoryService->store($validatedData);
+        
+        $request->session()->flash('success', 'Category details succesfully added!');
         return redirect()->route('category_management.list');
     }
 }

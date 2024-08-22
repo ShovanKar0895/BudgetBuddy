@@ -9,4 +9,5 @@
 
     <link rel="stylesheet" href="{{ asset('templates/datum/css/backend-plugin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('templates/datum/css/backend.css?v=1.0.0') }}">
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
 </head>

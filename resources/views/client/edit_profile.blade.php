@@ -142,8 +142,8 @@
                                        @error('about')<div class="alert alert-danger">{{ $message }}</div>@enderror
                                     </div>
                                  </div>
-                                 <button type="reset" class="btn btn-outline-primary mr-2">Cancel</button>
-                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                 <button type="reset" class="btn action-btn mr-2">Cancel</button>
+                                 <button type="submit" class="btn theme-btn">Submit</button>
                               </form>
                            </div>
                         </div>
@@ -174,8 +174,8 @@
                                     <input type="Password" class="form-control @error('new_password_confirmation') is-invalid @enderror" id="new_password_confirmation" name="new_password_confirmation" value="">
                                     @error('new_password_confirmation')<div class="alert alert-danger">{{ $message }}</div>@enderror
                                  </div>
-                                 <button type="reset" class="btn btn-outline-primary mr-2">Cancel</button>
-                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                 <button type="reset" class="btn action-btn mr-2">Cancel</button>
+                                 <button type="submit" class="btn theme-btn">Submit</button>
                               </form>
                            </div>
                         </div>
@@ -268,8 +268,8 @@
                                     <input type="text" class="form-control @error('url') is-invalid @enderror" name="url" id="url" value="{{$user_details->portfolio_url}}">
                                     @error('url')<div class="alert alert-danger">{{ $message }}</div>@enderror
                                  </div>
-                                 <button type="reset" class="btn btn-outline-primary mr-2">Cancel</button>
-                                 <button type="submit" class="btn btn-primary">Submit</button>
+                                 <button type="reset" class="btn action-btn mr-2">Cancel</button>
+                                 <button type="submit" class="btn theme-btn">Submit</button>
                               </form>
                            </div>
                         </div>

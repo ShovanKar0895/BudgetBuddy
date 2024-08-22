@@ -1,0 +1,119 @@
+.iq-sidebar{
+    background: #2f522d;
+}
+.thead-gold{
+    background: #d4af37;
+}
+
+.theme-btn{
+    background: #d4af37;
+}
+.theme-btn:hover{
+    background: #e9d38b;
+}
+
+.tbody-green{
+    background: #d5f3d3;
+}
+
+.content-page{
+    background: #a1cb9e;
+}
+
+.action-btn{
+    background: #ff6f61;
+}
+.action-btn:hover{
+    background: #e9968e;
+}
+
+.page-link {
+    border-color: #d4af37;
+    background: #d4af37;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #d4af37 !important;
+    border-color: #a9840c !important;
+    color: #fff !important;
+}
+.pagination .page-item.disabled .page-link {
+    background-color: #cabe95 !important;
+    border-color: #d4af37 !important;
+    color: #fff !important;
+}
+
+.page-link:hover{
+  background: #a9840c;
+}
+
+.form-control,.choices{
+    border: 1px solid #e7c34e;
+}
+
+.form-control:focus,.choices:focus{
+    border: 1px solid #c29e28;
+}
+
+.choices.is-focused.is-open {
+    border: 1px solid #c29e28;
+}
+
+.form-group label{
+    font-weight: 700;
+}
+
+.choices__list--multiple .choices__item {
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 1rem;
+    padding: 4px 10px;
+    font-size: 12px;
+    font-weight: 500;
+    margin-right: 3.75px;
+    margin-bottom: 3.75px;
+    background-color: #d4af37;
+    border: 1px solid #d4af37;
+    color: #000;
+    word-break: break-all;
+}
+
+.choices[data-type*=select-multiple] .choices__button, .choices[data-type*=text] .choices__button {
+    position: relative;
+    display: inline-block;
+    margin: 0 -4px 0 8px;
+    padding-left: 16px;
+    border-left: 1px solid #000;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMjEiIHZpZXdCb3g9IjAgMCAyMSAyMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjRkZGIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0yLjU5Mi4wNDRsMTguMzY0IDE4LjM2NC0yLjU0OCAyLjU0OEwuMDQ0IDIuNTkyeiIvPjxwYXRoIGQ9Ik0wIDE4LjM2NEwxOC4zNjQgMGwyLjU0OCAyLjU0OEwyLjU0OCAyMC45MTJ6Ii8+PC9nPjwvc3ZnPg==);
+    background-size: 8px;
+    width: 8px;
+    line-height: 1;
+    opacity: .75;
+    border-radius: 0;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    color: #497a45;
+    background: rgb(93 181 92 / 10%);
+}
+
+.nav-link{
+    text-align:center ;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: #ffffff;
+    background: #6fa36b;
+}
+
+a{
+    color: #2f522d;
+}
+
+a:hover{
+    color: #69d562;
+}
+
+.nav-pills .nav-link:hover {
+    color: #69d562;
+}

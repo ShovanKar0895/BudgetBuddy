@@ -2,16 +2,18 @@
 <html lang="en">
   @include('structures.head')
   <style>
-    .pagination .page-item.active .page-link {
-        background-color: #1b3e83 !important; /* Primary color */
-        border-color: #142953 !important; /* Primary color */
-        color: #fff !important; /* White text */
+    /* .pagination .page-item.active .page-link {
+        background-color: #1b3e83 !important;
+        border-color: #142953 !important;
+        color: #fff !important;
     }
     .pagination .page-item.disabled .page-link {
-        background-color: #6b89c3 !important; /* Primary color */
-        border-color: #142953 !important; /* Primary color */
-        color: #fff !important; /* White text */
-    }
+        background-color: #6b89c3 !important;
+        border-color: #142953 !important;
+        color: #fff !important;
+    } */
+
+    
   </style>
   <body class="  ">
     <!-- loader Start -->
@@ -39,7 +41,7 @@
                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                     </svg>
                                  </i> --}}
-                                 <button type="button" id="add-category-button" class="btn btn-info rounded-pill mt-2">Add Category</button>
+                                 <button type="button" id="add-category-button" class="btn theme-btn rounded-pill mt-2">Add Category</button>
                               </div>
                         </div>
                         <div class="card-body">
@@ -529,7 +531,7 @@
                                  </tfoot>
                               </table> --}}
                               <table id="caseListTable" class="table table-bordered table-striped">
-                                <thead class="thead-dark">
+                                <thead class="thead-gold">
                                 <tr>
                                   <th>ID</th>
                                   <th>Name</th>
@@ -539,7 +541,7 @@
                                   <th>Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="tbody-green">
                                 </tbody>
                               </table>
                            </div>
@@ -624,7 +626,7 @@
                             let buttonText = data == '1' ? 'Active' : 'Inactive';
                             return `
                                 <div class="btn-group" role="group">
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions
+                                    <button id="btnGroupDrop1" type="button" class="btn action-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Actions
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         <a class="dropdown-item" href="${row.urls.edit_url}">Edit Details</a>
@@ -666,16 +668,16 @@
         <nav aria-label="Page navigation example">
            <ul class="pagination">
               <li class="page-item ${pageInfo.page === 0 ? 'disabled' : ''}">
-                    <a class="page-link border-primary bg-primary text-white" href="#" data-page="previous">Previous</a>
+                    <a class="page-link text-white" href="#" data-page="previous">Previous</a>
               </li>
               ${Array.from({length: endPage - startPage + 1}, (_, i) => {
                     var pageNum = startPage + i;
                     return `<li class="page-item ${pageNum === pageInfo.page ? 'active' : ''}">
-                       <a class="page-link border-primary bg-primary text-white" href="#" data-page="${pageNum + 1}">${pageNum + 1}</a>
+                       <a class="page-link text-white" href="#" data-page="${pageNum + 1}">${pageNum + 1}</a>
                     </li>`;
               }).join('')}
               <li class="page-item ${pageInfo.page === pageInfo.pages - 1 ? 'disabled' : ''}">
-                    <a class="page-link border-primary bg-primary text-white" href="#" data-page="next">Next</a>
+                    <a class="page-link text-white" href="#" data-page="next">Next</a>
               </li>
            </ul>
         </nav>

@@ -12,7 +12,7 @@
                     Copyright
                     <script>
                         document.write(new Date().getFullYear())
-                    </script>© <a href="#" class="">Datum</a>
+                    </script>© <a href="#" class="">Budget Buddy</a>
                     All Rights Reserved.
                 </span>
             </div>

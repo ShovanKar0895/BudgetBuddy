@@ -40,10 +40,10 @@
                         </div>
                         <div class="form-group">
                             <label for="remarks">Remarks:</label>
-                             <input type="text" id="remarks" name="remarks" placeholder="Add tags here" values="">
+                             <input type="text" class="form-control" id="remarks" name="remarks" placeholder="Add tags here" values="">
                         </div>
-                        <button type="submit" class="btn btn-success mr-2">Submit</button>
-                        <button type="submit" class="btn bg-danger">Cancel</button>
+                        <button type="submit" class="btn theme-btn mr-2">Submit</button>
+                        <button type="submit" class="btn action-btn">Cancel</button>
                      </form>
                   </div>
                </div>

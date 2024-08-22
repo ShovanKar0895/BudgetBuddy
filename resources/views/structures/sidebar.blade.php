@@ -17,7 +17,7 @@
     <div class="data-scrollbar" data-scroll="1">
         <nav class="iq-sidebar-menu">
             <ul id="iq-sidebar-toggle" class="side-menu">
-                <li class="sidebar-layout {{request()->is('dashboard*') ? 'active' : ''}}">
+                <li class="sidebar-layout {{ (request()->is('dashboard*') || request()->is('account/*')) ? 'active' : '' }}">
                     <a href="{{route('dashboard.index')}}" class="svg-icon">
                         <i class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewBox="0 0 24 24"

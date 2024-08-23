@@ -2,12 +2,12 @@
 
 namespace App\Services;
 
-use App\Models\Category;
+use App\Models\Investment;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use MongoDB\BSON\ObjectId;
 
-class CategoryService
+class InvestmentService
 {
     protected $userService;
 
@@ -16,21 +16,31 @@ class CategoryService
         $this->userService = $userService;
     }
 
-    public function categoryDocument(array $userData){
+    public function investmentDocument(array $investmentData){
 
         return [
-            'name' => $userData['name'] ?? null,
-            'description' => $userData['description'] ?? null,
-            'remarks' => $userData['remarks'] ?? null,
             'user_id' => new ObjectId(Auth::id()),
+            'type' => $investmentData['type'] ?? null,
+            'amount' => $investmentData['amount'] ?? null,
+            'institution' => $investmentData['institution'] ?? null,
+            'interest_rate' => $investmentData['interest_rate'] ?? null,
+            'maturity_date' => $investmentData['maturity_date'] ?? null,
+            'frequency' => $investmentData['frequency'] ?? null,
+            'commitment_date' => $investmentData['commitment_date'] ?? null,
+            'category' => $investmentData['category'] ?? null,
+            'note' => $investmentData['note'] ?? null,
             'added_time' => time(),
-            'last_updated_time' => $userData['last_updated_time'] ?? null,
+            'last_updated_time' => $investmentData['last_updated_time'] ?? null,
             'status' => '1',
         ];
     }
 
-    public function populate_defaults_for_user($userId)
-{
+    public function store(array $investmentData): Investment{
+        $investment = Investment::create($this->investmentDocument($investmentData));
+        return $investment;
+    }
+
+    public function populate_defaults_for_user($userId){
     try {
         // Fetch default categories
         $defaultCategories = Category::where([
@@ -112,23 +122,13 @@ class CategoryService
         return $affectedUsers;
     }
 
-    public function store(array $categoryData): Category{
-        $category = Category::create($this->categoryDocument($categoryData));
-        return $category;
-    }
+    
 
     public function fetch($categoryId){
         return Category::where([
             ['status','!=','5'],
             ['_id',$categoryId]
         ])->first();
-    }
-
-    public function fetch_all(){
-        return Category::where([
-            ['status','!=','5'],
-            ['user_id',new ObjectId(Auth::id())],
-        ])->get();
     }
 }
 

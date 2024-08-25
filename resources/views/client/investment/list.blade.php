@@ -27,7 +27,7 @@
                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                                     </svg>
                                  </i> --}}
-                                 <button type="button" id="add-category-button" class="btn theme-btn rounded-pill mt-2">Add Investment</button>
+                                 <button type="button" id="add-investment-button" class="btn theme-btn rounded-pill mt-2">Add Investment</button>
                               </div>
                         </div>
                         <div class="card-body">
@@ -40,9 +40,12 @@
                                 <thead class="thead-gold">
                                 <tr>
                                   <th>ID</th>
-                                  <th>Name</th>
-                                  <th>Description</th>
-                                  <th>Added Date</th>
+                                  <th>Type</th>
+                                  <th>Amount</th>
+                                  <th>Institution</th>
+                                  <th>Maturity Date</th>
+                                  <th>Category</th>
+                                  <th>Note</th>
                                   <th>Status</th>
                                   <th>Actions</th>
                                 </tr>
@@ -72,23 +75,34 @@
                 serverSide: true,
                 contentType: "application/json",
                 ajax: {
-                    url:"{{route('category_management.get_list')}}",
+                    url:"{{route('investments.get_list_for_user')}}",
                     type:"POST",
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    // beforeSend: function (xhr, settings) {
-                    //     xhr.setRequestHeader("X-CSRFToken", csrf_token);
-                    // },
-                    // data: function (data) {
-                    //     return JSON.stringify(data);
-                    // },
                 },
                 columns: [
                     { data: 'id',orderable:false,visible:false},
-                    { data: 'name' }, 
-                    { data: 'description', width: '30%' },
-                    { data: 'added_time' },
+                    { data: 'type' }, 
+                    { data: 'amount' },
+                    { data: 'institution' },
+                    { data: 'maturity_date' },
+                    { 
+                        data: 'category',
+                        orderable: false,
+                        render: function (data, type, row) {
+                            console.log(data,type,row);
+                            let badges = '';
+                            data.forEach((item) => {
+                                badges += `
+                                    <span class="mt-2 badge badge-pill badge-warning">${item}</span>
+                                `;
+                            });
+                            return badges;
+                        }
+
+                    },
+                    { data: 'note' },
                     { 
                         data: 'status',
                         render: function (data, type, row) {
@@ -191,20 +205,9 @@
         console.log('No');
     }
 
-    const addCategoryButton = document.getElementById('add-category-button');
-    const predefinedCategoryYesButton = document.getElementById('predefined-category-yes');
-    const predefinedCategoryNoButton = document.getElementById('predefined-category-no');
-      predefinedCategoryYesButton.addEventListener('click', function() {
-      console.log('Yes Button was clicked!');
-      // You can add any additional logic here.
-      window.location.href="{{route('category_management.populate_defaults')}}";
-   });
-      predefinedCategoryNoButton.addEventListener('click', function() {
-         console.log('No Button was clicked!');
-         // You can add any additional logic here.
-      });
+    const addInvestmentButton = document.getElementById('add-investment-button');
 
-      addCategoryButton.addEventListener('click',function(){
+      addInvestmentButton.addEventListener('click',function(){
          window.location.href="{{route('investments.add_investments')}}";
       });
         });

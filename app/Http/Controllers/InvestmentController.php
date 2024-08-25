@@ -62,10 +62,11 @@ class InvestmentController extends Controller
         $userId = Auth::id();
 
         $validatedData = $request->validated();
-        dd($validatedData);
-        // $validatedData['remarks'] = Str::of($validatedData['remarks'])->explode(',')->toArray();
 
-        // dd($validatedData);
+        // $categoryObjectIds = array_map(function($id) {
+        //     return new ObjectId($id);
+        // }, $validatedData['category']);
+        // $validatedData['category'] = $categoryObjectIds;
 
         $affectedUsers = $this->investmentService->store($validatedData);
         
@@ -73,7 +74,7 @@ class InvestmentController extends Controller
         return redirect()->route('investments.list');
     }
 
-    public function getCategoriesList(Request $request){
+    public function getInvestmentsListForUser(Request $request){
         // echo "<pre>";echo "<b>Total Response with ajax : </b>";dump($request->post());echo "</pre>";echo "<br><br>";
 
         $userId = new ObjectId(Auth::id());
@@ -105,24 +106,33 @@ class InvestmentController extends Controller
 
         switch ($columnIndex){
             case '1':
-                $columnName = 'name';
+                $columnName = 'type';
                 break;
             case '2':
-                $columnName = 'description';
+                $columnName = 'amount';
                 break;
             case '3':
-                $columnName = 'added_time';
+                $columnName = 'institution';
                 break;
             case '4':
-                $columnName = 'status';
+                $columnName = 'maturity_date';
+                break;
+            case '5':
+                $columnName = 'commitment_date';
+                break;
+            case '6':
+                $columnName = 'category';
+                break;
+            case '7':
+                $columnName = 'note';
                 break;
             default:
-                $columnName = 'added_time';
+                $columnName = 'maturity_date';
                 $columnSortOrder = 'desc';
         }
 
         if($draw === '1'){
-            $columnName = 'added_time';
+            $columnName = 'maturity_date';
             $columnSortOrder = 'desc';
         }else{
         }
@@ -152,18 +162,34 @@ class InvestmentController extends Controller
         if($fetchedUserList->count()>0){
             foreach($fetchedUserList as $userKey => $userDetails){
 
+                // $categoryDetails = $this->categoryService->fetch($userDetails->category[$userKey]);
+                $categoryDetailsArr = [];
+                foreach($userDetails->category as $categoryKey => $categoryDetails){
+                    $cat = $this->categoryService->fetch($categoryDetails);
+                    array_push($categoryDetailsArr,$cat->name);
+                }
                 array_push($usersListTempHolder,[
                     'id' => $userDetails->_id,
-                    'name' => $userDetails->name,
-                    'description' => $userDetails->description,
-                    'added_time' => $userDetails->added_time,
+                    'type' => $userDetails->type,
+                    'amount' => $userDetails->amount,
+                    'institution' => $userDetails->institution,
+                    'maturity_date' => $userDetails->maturity_date,
+                    'commitment_date' => $userDetails->commitment_date,
+                    'category' => $categoryDetailsArr,
+                    'note' => $userDetails->note,
                     'status' => $userDetails->status,
                     'urls' => [
-                        'activation_url' => route('category_management.activate_category',['category_id'=> $userDetails->id]),
-                        'deactivation_url' => route('category_management.deactivate_category',['category_id'=> $userDetails->id]),
-                        'edit_url' => route('category_management.edit_category',['category_id' => $userDetails->id]),
-                        'deletion_url' => route('category_management.delete_category',['category_id'=> $userDetails->id]),
+                        'activation_url' => route('investments.activate_investment',['investment_id'=> $userDetails->id]),
+                        'deactivation_url' => route('investments.deactivate_investment',['investment_id'=> $userDetails->id]),
+                        'edit_url' => route('investments.edit_investment',['investment_id' => $userDetails->id]),
+                        'deletion_url' => route('investments.delete_investment',['investment_id'=> $userDetails->id]),
                     ],
+                    // 'urls' => [
+                    //     'activation_url' => '#',
+                    //     'deactivation_url' => '#',
+                    //     'edit_url' => '#',
+                    //     'deletion_url' => '#',
+                    // ],
                 ]);
             }
 
@@ -184,9 +210,9 @@ class InvestmentController extends Controller
         echo json_encode($response);
     }
 
-    public function activateCategory(Request $request){
+    public function activateInvestment(Request $request){
 
-        $encryptedUserId = $request->route('category_id');
+        $encryptedUserId = $request->route('investment_id');
         // dd($encryptedUserId);
         // $userId = Crypt::decryptString($encryptedUserId);
 
@@ -196,13 +222,13 @@ class InvestmentController extends Controller
 
         $affectedCategories = $this->investmentService->update($updateData,$encryptedUserId);
 
-        $request->session()->flash('success','Category details successfully deactivated!');
-        return redirect()->route('category_management.list');
+        $request->session()->flash('success','Investment details successfully deactivated!');
+        return redirect()->route('investments.list');
     }
 
-    public function deactivateCategory(Request $request){
+    public function deactivateInvestment(Request $request){
 
-        $encryptedUserId = $request->route('category_id');
+        $encryptedUserId = $request->route('investment_id');
         // dd($encryptedUserId);
         // $userId = Crypt::decryptString($encryptedUserId);
 
@@ -212,13 +238,13 @@ class InvestmentController extends Controller
 
         $affectedCategories = $this->investmentService->update($updateData,$encryptedUserId);
 
-        $request->session()->flash('success','Category details successfully deactivated!');
-        return redirect()->route('category_management.list');
+        $request->session()->flash('success','Investment details successfully deactivated!');
+        return redirect()->route('investments.list');
     }
 
-    public function deleteCategory(Request $request){
+    public function deleteInvestment(Request $request){
 
-        $encryptedUserId = $request->route('category_id');
+        $encryptedUserId = $request->route('investment_id');
         // dd($encryptedUserId);
         // $userId = Crypt::decryptString($encryptedUserId);
 
@@ -228,44 +254,45 @@ class InvestmentController extends Controller
 
         $affectedCategories = $this->investmentService->update($updateData,$encryptedUserId);
 
-        $request->session()->flash('success','Category details successfully deleted!');
-        return redirect()->route('category_management.list');
+        $request->session()->flash('success','Investment details successfully deleted!');
+        return redirect()->route('investments.list');
     }
 
-    public function editCategorySection(Request $request){
+    public function editInvestmentSection(Request $request){
 
-        $categoryId = $request->route('category_id');
+        $investmentId = $request->route('investment_id');
         $user = Auth::user();
         $user->full_name = $user->first_name.' '.$user->last_name;
 
-        $category = $this->investmentService->fetch($categoryId);
+        $investment = $this->investmentService->fetch($investmentId);
+        $categories = $this->categoryService->fetch_all();
 
         $viewData = [
-            'section' => 'Category Management',
+            'section' => 'Investment Management',
             'user_details' => $user,
-            'category_details' => $category,
+            'investment_details' => $investment,
+            'categories' => $categories
         ];
 
         // dd($viewData);
 
 
-        return view('client.edit_category',$viewData);
+        return view('client.investment.edit',$viewData);
     }
 
-    public function updateCategoryDetails(UpdateCategoryRequest $request){
+    public function updateInvestmentDetails(AddInvestmentRequest $request){
         
         $userId = Auth::id();
-        $categoryId = $request->route('category_id');
+        $investmentId = $request->route('investment_id');
 
         $validatedData = $request->validated();
-        $validatedData['remarks'] = Str::of($validatedData['remarks'])->explode(',')->toArray();
 
         // dd($validatedData);
 
-        $affectedUsers = $this->investmentService->update($validatedData,$categoryId);
+        $affectedUsers = $this->investmentService->update($validatedData,$investmentId);
         
         $request->session()->flash('success', 'Category details succesfully updated!');
-        return redirect()->route('category_management.list');
+        return redirect()->route('investments.list');
     }
 
     

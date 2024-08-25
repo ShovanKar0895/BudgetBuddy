@@ -39,17 +39,14 @@ Route::middleware('auth')->controller(CategoryController::class)->group(function
 });
 
 Route::middleware('auth')->controller(InvestmentController::class)->group(function(){
-    Route::get('category-management/populate-default-categories','populateDefaultCategories')->name('category_management.populate_defaults');
     Route::get('investments','listSection')->name('investments.list');
     Route::get('investments/add-investment','addInvestmentSection')->name('investments.add_investments');
-    Route::post('investments/create-investment','createInvestmentDetails')->name('investment.create_investment');
-    // Route::post('category-management/categories-list','getCategoriesList')->name('category_management.get_list');
-    // Route::get('category-management/activate-category/{category_id}','activateCategory')->name('category_management.activate_category');
-    // Route::get('category-management/deactivate-category/{category_id}','deactivateCategory')->name('category_management.deactivate_category');
-    // Route::get('category-management/delete-category/{category_id}','deleteCategory')->name('category_management.delete_category');
-    // Route::get('category-management/edit-category/{category_id}','editCategorySection')->name('category_management.edit_category');
-    // Route::post('category-management/update-category/{category_id}','updateCategoryDetails')->name('category_management.update_category');
-    // Route::get('category-management/add-category','addCategorySection')->name('category_management.add_category');
-    // Route::post('category-management/create-category','createCategoryDetails')->name('category_management.create_category');
+    Route::post('investments/create-investment','createInvestmentDetails')->name('investments.create_investment');
+    Route::post('investments/categories-list','getInvestmentsListForUser')->name('investments.get_list_for_user');
+    Route::get('investments/activate-investment/{investment_id}','activateInvestment')->name('investments.activate_investment');
+    Route::get('investments/deactivate-investment/{investment_id}','deactivateInvestment')->name('investments.deactivate_investment');
+    Route::get('investments/delete-investment/{investment_id}','deleteInvestment')->name('investments.delete_investment');
+    Route::get('investments/edit-investment/{investment_id}','editInvestmentSection')->name('investments.edit_investment');
+    Route::post('investments/update-investment/{investment_id}','updateInvestmentDetails')->name('investments.update_investment');
 });
  

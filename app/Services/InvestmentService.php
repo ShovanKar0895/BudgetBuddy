@@ -40,52 +40,16 @@ class InvestmentService
         return $investment;
     }
 
-    public function populate_defaults_for_user($userId){
-    try {
-        // Fetch default categories
-        $defaultCategories = Category::where([
-            ['status', '1'],
-            ['user_id', 0],
-        ])->get();
-
-        // Convert userId to MongoDB ObjectId
-        $objUserId = new ObjectId($userId);
-
-        // Transform default categories
-        $multiplied = $defaultCategories->map(function ($item) use ($objUserId) {
-            $itemArray = $item->toArray();
-            unset($itemArray['_id']); // Remove the _id field
-            $itemArray['user_id'] = $objUserId;
-            $itemArray['added_time'] = time();
-            $itemArray['last_updated_time'] = null;
-
-            return $itemArray;
-        });
-
-        // Insert new categories
-        Category::insert($multiplied->toArray());
-
-        // Update user service
-        $this->userService->update([
-            'category_seen' => '1'
-        ], $userId);
-
-    } catch (\Exception $e) {
-        Log::error('Error in populate_defaults_for_user: ' . $e->getMessage());
-        throw $e; // Optionally rethrow the exception
-    }
-}
-
 
     public function count($conditions): int
     {
         $searchTerm = $conditions['search_by'];
 
-        return Category::where([
+        return Investment::where([
             ['status', '!=', '5'],
             ['user_id',$conditions['user_id']]
             ])->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%');
+                $query->where('type', 'like', '%' . $searchTerm . '%');
             })
             ->count();
     }
@@ -94,11 +58,11 @@ class InvestmentService
     {
         $searchTerm = $conditions['search_by'];
 
-        return Category::where([
+        return Investment::where([
             ['status', '!=', '5'],
             ['user_id',$conditions['user_id']]
             ])->where(function ($query) use ($searchTerm) {
-                $query->where('name', 'like', '%' . $searchTerm . '%');
+                $query->where('type', 'like', '%' . $searchTerm . '%');
             })
             ->orderBy($conditions['ordering_column'], $conditions['ordering_column_by'])
             ->offset($conditions['offset'])
@@ -115,7 +79,7 @@ class InvestmentService
             $categoryId = new ObjectId($categoryId);
         }
 
-        $affectedUsers = Category::where('_id', $categoryId)
+        $affectedUsers = Investment::where('_id', $categoryId)
             ->where('status', '!=', '5')
             ->update($updateData);
 
@@ -125,7 +89,7 @@ class InvestmentService
     
 
     public function fetch($categoryId){
-        return Category::where([
+        return Investment::where([
             ['status','!=','5'],
             ['_id',$categoryId]
         ])->first();

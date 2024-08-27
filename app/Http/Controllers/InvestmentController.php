@@ -12,6 +12,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\UTCDateTime;
 
 class InvestmentController extends Controller
 {
@@ -128,12 +129,12 @@ class InvestmentController extends Controller
                 break;
             default:
                 $columnName = 'maturity_date';
-                $columnSortOrder = 'desc';
+                $columnSortOrder = 'asc';
         }
 
         if($draw === '1'){
             $columnName = 'maturity_date';
-            $columnSortOrder = 'desc';
+            $columnSortOrder = 'asc';
         }else{
         }
 
@@ -173,8 +174,8 @@ class InvestmentController extends Controller
                     'type' => $userDetails->type,
                     'amount' => $userDetails->amount,
                     'institution' => $userDetails->institution,
-                    'maturity_date' => $userDetails->maturity_date,
-                    'commitment_date' => $userDetails->commitment_date,
+                    'maturity_date' => $userDetails->maturity_date->toDateTime()->format('d M, Y'),
+                    'commitment_date' => $userDetails->commitment_date->toDateTime()->format('d M, Y'),
                     'category' => $categoryDetailsArr,
                     'note' => $userDetails->note,
                     'status' => $userDetails->status,
@@ -265,6 +266,9 @@ class InvestmentController extends Controller
         $user->full_name = $user->first_name.' '.$user->last_name;
 
         $investment = $this->investmentService->fetch($investmentId);
+        $investment->maturity_date = $investment->maturity_date->toDateTime()->format('Y-m-d');
+        $investment->commitment_date = $investment->commitment_date->toDateTime()->format('Y-m-d');
+
         $categories = $this->categoryService->fetch_all();
 
         $viewData = [
@@ -286,7 +290,8 @@ class InvestmentController extends Controller
         $investmentId = $request->route('investment_id');
 
         $validatedData = $request->validated();
-
+        $validatedData['maturity_date'] = new UTCDateTime(strtotime($validatedData['maturity_date'])*1000);
+        $validatedData['commitment_date'] = new UTCDateTime(strtotime($validatedData['commitment_date'])*1000);
         // dd($validatedData);
 
         $affectedUsers = $this->investmentService->update($validatedData,$investmentId);

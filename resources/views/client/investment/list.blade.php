@@ -84,7 +84,12 @@
                 columns: [
                     { data: 'id',orderable:false,visible:false},
                     { data: 'type' }, 
-                    { data: 'amount' },
+                    { 
+                        data: 'amount',
+                        render: function (data, type, row) {
+                            return `₹${data}`;
+                        }
+                    },
                     { data: 'institution' },
                     { data: 'maturity_date' },
                     { 

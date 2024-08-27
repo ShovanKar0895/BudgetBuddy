@@ -6,6 +6,7 @@ use App\Models\Investment;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\UTCDateTime;
 
 class InvestmentService
 {
@@ -24,12 +25,12 @@ class InvestmentService
             'amount' => $investmentData['amount'] ?? null,
             'institution' => $investmentData['institution'] ?? null,
             'interest_rate' => $investmentData['interest_rate'] ?? null,
-            'maturity_date' => $investmentData['maturity_date'] ?? null,
+            'maturity_date' => $investmentData['maturity_date'] ? new UTCDateTime(strtotime($investmentData['maturity_date']) * 1000) : null,
             'frequency' => $investmentData['frequency'] ?? null,
-            'commitment_date' => $investmentData['commitment_date'] ?? null,
+            'commitment_date' => $investmentData['commitment_date'] ? new UTCDateTime(strtotime($investmentData['commitment_date']) * 1000) : null,
             'category' => $investmentData['category'] ?? null,
             'note' => $investmentData['note'] ?? null,
-            'added_time' => time(),
+            'added_time' => new UTCDateTime(time()*1000),
             'last_updated_time' => $investmentData['last_updated_time'] ?? null,
             'status' => '1',
         ];
@@ -49,7 +50,9 @@ class InvestmentService
             ['status', '!=', '5'],
             ['user_id',$conditions['user_id']]
             ])->where(function ($query) use ($searchTerm) {
-                $query->where('type', 'like', '%' . $searchTerm . '%');
+                $query->where('type', 'like', '%' . $searchTerm . '%')
+                ->orWhere('institution', 'like', '%' . $searchTerm . '%')
+                ->orWhere('note', 'like', '%' . $searchTerm . '%');
             })
             ->count();
     }
@@ -62,7 +65,9 @@ class InvestmentService
             ['status', '!=', '5'],
             ['user_id',$conditions['user_id']]
             ])->where(function ($query) use ($searchTerm) {
-                $query->where('type', 'like', '%' . $searchTerm . '%');
+                $query->where('type', 'like', '%' . $searchTerm . '%')
+                ->orWhere('institution', 'like', '%' . $searchTerm . '%')
+                ->orWhere('note', 'like', '%' . $searchTerm . '%');
             })
             ->orderBy($conditions['ordering_column'], $conditions['ordering_column_by'])
             ->offset($conditions['offset'])
@@ -72,7 +77,7 @@ class InvestmentService
 
     public function update(array $updateData, $categoryId): int
     {
-        $updateData['last_updated_time'] = time();
+        $updateData['last_updated_time'] = new UTCDateTime(time()*1000);
         
         // Ensure $categoryId is an ObjectId if necessary
         if (!$categoryId instanceof ObjectId) {

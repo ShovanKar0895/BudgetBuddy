@@ -28,7 +28,7 @@ class Investment extends Eloquent
     //     'email',
     //     'password',
     // ];
-
+    
     protected $guarded = [];
 
     /**

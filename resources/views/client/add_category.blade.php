@@ -23,8 +23,6 @@
                   </div>
                   <div class="card-body">
                      <div class="collapse" id="form-element-1">
-                           {{-- <div class="card"><kbd class="bg-dark"><pre id="basic-form" class="text-white"><code>
-</code></pre></kbd></div> --}}
                         </div>
                      <form method="POST" action="{{route('category_management.create_category')}}">
                         @csrf

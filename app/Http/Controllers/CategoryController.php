@@ -22,6 +22,11 @@ class CategoryController extends Controller
 
         $userId = Auth::id();
         $this->categoryService->populate_defaults_for_user($userId);
+        return redirect()->route('category_management.list');
+    }
+
+    public function populateSystemDefaultCategories(Request $request){
+        $this->categoryService->populate_system_defaults();
     }
 
     public function listSection(Request $request){
@@ -33,7 +38,7 @@ class CategoryController extends Controller
             'section' => 'Category Management',
             'user_details' => $user,
         ];
-        return view('client.category_list',$viewData);
+        return view('client.category.list',$viewData);
     }
 
     public function getCategoriesList(Request $request){
@@ -119,7 +124,7 @@ class CategoryController extends Controller
                     'id' => $userDetails->_id,
                     'name' => $userDetails->name,
                     'description' => $userDetails->description,
-                    'added_time' => $userDetails->added_time,
+                    'added_time' => $userDetails->added_time->toDateTime()->format('d M, Y'),
                     'status' => $userDetails->status,
                     'urls' => [
                         'activation_url' => route('category_management.activate_category',['category_id'=> $userDetails->id]),
@@ -212,7 +217,7 @@ class CategoryController extends Controller
         // dd($viewData);
 
 
-        return view('client.edit_category',$viewData);
+        return view('client.category.edit',$viewData);
     }
 
     public function updateCategoryDetails(UpdateCategoryRequest $request){
@@ -244,7 +249,7 @@ class CategoryController extends Controller
         // dd($viewData);
 
 
-        return view('client.add_category',$viewData);
+        return view('client.category.add',$viewData);
     }
 
     public function createCategoryDetails(AddCategoryRequest $request){

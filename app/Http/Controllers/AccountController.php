@@ -30,7 +30,7 @@ class AccountController extends Controller
             'user_details' => $user
         ];
 
-        return view('client.my_profile',$viewData);
+        return view('client.account.profile',$viewData);
     }
 
     public function editProfileSection(Request $request){
@@ -42,7 +42,7 @@ class AccountController extends Controller
             'user_details' => $user
         ];
 
-        return view('client.edit_profile',$viewData);
+        return view('client.account.edit',$viewData);
     }
 
     public function updateProfilePersonalInfo(UpdatePersonalInfoRequest $request){

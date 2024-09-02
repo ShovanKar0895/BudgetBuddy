@@ -554,7 +554,7 @@
 
          <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
-               <div class="modal-content">
+               <div class="modal-content modal-theme">
                   <div class="modal-header">
                      <h5 class="modal-title" id="exampleModalCenterTitle">Hi, {{$user_details->first_name}}</h5>
                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -567,8 +567,8 @@
                      </div>
                   </div>
                   <div class="modal-footer">
-                     <button type="button" id="predefined-category-no" class="btn btn-danger" data-dismiss="modal">Nope!</button>
-                     <button type="button" id="predefined-category-yes" class="btn btn-success" data-dismiss="modal">Sure, why not?</button>
+                     <button type="button" id="predefined-category-no" class="btn action-btn" data-dismiss="modal">Nope!</button>
+                     <button type="button" id="predefined-category-yes" class="btn theme-btn" data-dismiss="modal">Sure, why not?</button>
                   </div>
                </div>
             </div>

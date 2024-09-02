@@ -16,7 +16,7 @@ class DashboardController extends Controller
             'section' => 'Dashboard',
             'user_details' => $user,
         ];
-        return view('client.dashboard',$viewData);
+        return view('client.dashboard.index',$viewData);
     }
 
     public function logout(Request $request){

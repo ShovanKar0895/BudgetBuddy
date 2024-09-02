@@ -11,7 +11,7 @@ class LandingController extends Controller
         $viewData = [
             'section' => 'Login',
         ];
-        return view('client.login',$viewData);
+        return view('client.authentication.login',$viewData);
     }
 
     public function processLogin(Request $request){

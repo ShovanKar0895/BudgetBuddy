@@ -117,3 +117,7 @@ a:hover{
 .nav-pills .nav-link:hover {
     color: #69d562;
 }
+
+.modal-theme{
+    background: #6fa36b;
+}

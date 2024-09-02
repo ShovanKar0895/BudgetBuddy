@@ -47,12 +47,14 @@ class InvestmentController extends Controller
         $user = Auth::user();
         $user->full_name = $user->first_name.' '.$user->last_name;
 
-        $categories = $this->categoryService->fetch_all();
+        // $categories = $this->categoryService->fetch_all();
+        $subCategories = $this->categoryService->fetch_all_subcategories();
+        // dd($subCategories);
 
         $viewData = [
             'section' => 'Investments',
             'user_details' => $user,
-            'categories' => $categories,
+            'categories' => $subCategories,
         ];
 
         return view('client.investment.add',$viewData);
@@ -63,6 +65,7 @@ class InvestmentController extends Controller
         $userId = Auth::id();
 
         $validatedData = $request->validated();
+        dd($validatedData);
 
         // $categoryObjectIds = array_map(function($id) {
         //     return new ObjectId($id);

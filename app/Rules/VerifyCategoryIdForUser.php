@@ -18,10 +18,18 @@ class VerifyCategoryIdForUser implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        dd($value);
+        // $valueArr = explode("___",$value);
+        // dd($valueArr);
+        $subCategoryName = $valueArr[0];
+        $categoryObjectId = new ObjectId($valueArr[1]);
+        dd($categoryObjectId);
+
         $count = Category::where([
             ['user_id',new ObjectId(Auth::id())],
             ['status','!=','5'],
-            ['_id',new ObjectId($value)]
+            ['_id',$categoryObjectId],
+            ['remarks', $subCategoryName]
         ])->count();
         
         if($count === 0){

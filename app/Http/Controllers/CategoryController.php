@@ -259,7 +259,7 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
         $validatedData['remarks'] = Str::of($validatedData['remarks'])->explode(',')->toArray();
 
-        // dd($validatedData);
+        dd($validatedData);
 
         $affectedUsers = $this->categoryService->store($validatedData);
         

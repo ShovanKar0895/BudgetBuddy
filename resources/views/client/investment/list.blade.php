@@ -100,7 +100,7 @@
                             let badges = '';
                             data.forEach((item) => {
                                 badges += `
-                                    <span class="mt-2 badge badge-pill badge-warning">${item}</span>
+                                    <span class="mt-2 badge badge-pill badge-warning">${item.tag}</span>
                                 `;
                             });
                             return badges;

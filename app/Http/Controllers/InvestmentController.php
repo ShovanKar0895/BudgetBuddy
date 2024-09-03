@@ -65,12 +65,16 @@ class InvestmentController extends Controller
         $userId = Auth::id();
 
         $validatedData = $request->validated();
-        dd($validatedData);
+        // dd($validatedData);
 
-        // $categoryObjectIds = array_map(function($id) {
-        //     return new ObjectId($id);
-        // }, $validatedData['category']);
-        // $validatedData['category'] = $categoryObjectIds;
+        $categoryObjectIds = array_map(function($categoryValue){
+            $categoryValueArr = explode("___",$categoryValue);
+            return [
+                'category_id' => new ObjectId($categoryValueArr[1]),
+                'tag' => $categoryValueArr[0],
+            ];
+        }, $validatedData['category']);
+        $validatedData['category'] = $categoryObjectIds;
 
         $affectedUsers = $this->investmentService->store($validatedData);
         
@@ -146,8 +150,8 @@ class InvestmentController extends Controller
             'search_by' => $searchValue,
         ];
         // $totalUserCount = User::fetchAllUsersCount($fetchListCountConditions);
-        $totalUserCount = $this->investmentService->count($fetchListCountConditions);
-        //  echo "<pre>";echo "<b>Total Users : </b>";dump($totalUserCount);echo "</pre>";echo "<br><br>";
+        $totalInvestmentsCount = $this->investmentService->count($fetchListCountConditions);
+        //  echo "<pre>";echo "<b>Total Users : </b>";dump($totalInvestmentsCount);echo "</pre>";echo "<br><br>";
         //  die();
 
         $fetchListConditions = [
@@ -159,34 +163,30 @@ class InvestmentController extends Controller
             'offset' => $row, 
         ];
         // $fetchedUserList = User::fetchUsersList($fetchListConditions);
-        $fetchedUserList = $this->investmentService->list($fetchListConditions);
-        // echo "<pre>";echo "<b>Fetched Users : </b>";dump($fetchedUserList);echo "</pre>";echo "<br><br>";
+        $fetchedInvestmentsList = $this->investmentService->list($fetchListConditions);
+        // echo "<pre>";echo "<b>Fetched Users : </b>";dump($fetchedInvestmentsList);echo "</pre>";echo "<br><br>";
 
         $usersListTempHolder = [];
-        if($fetchedUserList->count()>0){
-            foreach($fetchedUserList as $userKey => $userDetails){
+        if($fetchedInvestmentsList->count()>0){
+            foreach($fetchedInvestmentsList as $investmentKey => $investmentDetails){
 
-                // $categoryDetails = $this->categoryService->fetch($userDetails->category[$userKey]);
+                // $categoryDetails = $this->categoryService->fetch($investmentDetails->category[$investmentKey]);
                 $categoryDetailsArr = [];
-                foreach($userDetails->category as $categoryKey => $categoryDetails){
-                    $cat = $this->categoryService->fetch($categoryDetails);
-                    array_push($categoryDetailsArr,$cat->name);
-                }
                 array_push($usersListTempHolder,[
-                    'id' => $userDetails->_id,
-                    'type' => $userDetails->type,
-                    'amount' => $userDetails->amount,
-                    'institution' => $userDetails->institution,
-                    'maturity_date' => $userDetails->maturity_date->toDateTime()->format('d M, Y'),
-                    'commitment_date' => $userDetails->commitment_date->toDateTime()->format('d M, Y'),
-                    'category' => $categoryDetailsArr,
-                    'note' => $userDetails->note,
-                    'status' => $userDetails->status,
+                    'id' => $investmentDetails->_id,
+                    'type' => $investmentDetails->type,
+                    'amount' => $investmentDetails->amount,
+                    'institution' => $investmentDetails->institution,
+                    'maturity_date' => $investmentDetails->maturity_date->toDateTime()->format('d M, Y'),
+                    'commitment_date' => $investmentDetails->commitment_date->toDateTime()->format('d M, Y'),
+                    'category' => $investmentDetails->category,
+                    'note' => $investmentDetails->note,
+                    'status' => $investmentDetails->status,
                     'urls' => [
-                        'activation_url' => route('investments.activate_investment',['investment_id'=> $userDetails->id]),
-                        'deactivation_url' => route('investments.deactivate_investment',['investment_id'=> $userDetails->id]),
-                        'edit_url' => route('investments.edit_investment',['investment_id' => $userDetails->id]),
-                        'deletion_url' => route('investments.delete_investment',['investment_id'=> $userDetails->id]),
+                        'activation_url' => route('investments.activate_investment',['investment_id'=> $investmentDetails->id]),
+                        'deactivation_url' => route('investments.deactivate_investment',['investment_id'=> $investmentDetails->id]),
+                        'edit_url' => route('investments.edit_investment',['investment_id' => $investmentDetails->id]),
+                        'deletion_url' => route('investments.delete_investment',['investment_id'=> $investmentDetails->id]),
                     ],
                     // 'urls' => [
                     //     'activation_url' => '#',
@@ -199,14 +199,14 @@ class InvestmentController extends Controller
 
             $response = [
                 'draw' => $draw,
-                'iTotalDisplayRecords' => $totalUserCount,
+                'iTotalDisplayRecords' => $totalInvestmentsCount,
                 'iTotalRecords' => count($usersListTempHolder),
                 'aaData' => $usersListTempHolder,
             ];
         }else{
             $response = [
                 'draw' => $draw,
-                'iTotalDisplayRecords' => $totalUserCount,
+                'iTotalDisplayRecords' => $totalInvestmentsCount,
                 'iTotalRecords' => count([]),
                 'aaData' => [],
             ];
@@ -272,7 +272,13 @@ class InvestmentController extends Controller
         $investment->maturity_date = $investment->maturity_date->toDateTime()->format('Y-m-d');
         $investment->commitment_date = $investment->commitment_date->toDateTime()->format('Y-m-d');
 
+        $subCategoryNames = array_map(function($value){
+            return $value['tag'];
+        }, $investment->category);
+        $investment->category = $subCategoryNames;
+
         $categories = $this->categoryService->fetch_all();
+        // dd($categories);
 
         $viewData = [
             'section' => 'Investment Management',
@@ -295,6 +301,14 @@ class InvestmentController extends Controller
         $validatedData = $request->validated();
         $validatedData['maturity_date'] = new UTCDateTime(strtotime($validatedData['maturity_date'])*1000);
         $validatedData['commitment_date'] = new UTCDateTime(strtotime($validatedData['commitment_date'])*1000);
+        $categoryObjectIds = array_map(function($categoryValue){
+            $categoryValueArr = explode("___",$categoryValue);
+            return [
+                'category_id' => new ObjectId($categoryValueArr[1]),
+                'tag' => $categoryValueArr[0],
+            ];
+        }, $validatedData['category']);
+        $validatedData['category'] = $categoryObjectIds;
         // dd($validatedData);
 
         $affectedUsers = $this->investmentService->update($validatedData,$investmentId);

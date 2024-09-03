@@ -70,11 +70,16 @@
                         <div class="form-group">
                             <label for="category">Category:</label>
                             <select multiple class="form-control choicesjs" id="category" name="category[]">
-                                @foreach ($categories as $category)
+                                {{-- @foreach ($categories as $category)
                                     <option value="{{ $category->_id }}" 
                                         @if(in_array((string) $category->_id, (array) $investment_details->category)) selected @endif>
                                         {{ $category->name }}
                                     </option>
+                                @endforeach --}}
+                                @foreach ($categories as $category)
+                                    @foreach($category['remarks'] as $subCategory)
+                                        <option value="{{$subCategory.'___'.$category->_id}}" @if(in_array($subCategory,$investment_details->category)) selected @endif>{{$subCategory}}</option>
+                                    @endforeach
                                 @endforeach
                             </select>
                         </div>

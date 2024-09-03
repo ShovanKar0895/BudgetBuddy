@@ -72,7 +72,6 @@
                             <select multiple class="form-control choicesjs" id="category" name="category[]">
                                 @foreach ($categories as $categoryId => $category)
                                     @foreach($category as $subCategory)
-                                        {{-- <option value="{{$category->_id}}" @if(old('category') == '{{$category->_id}}') selected @endif>{{$category->name}}</option> --}}
                                         <option value="{{$subCategory.'___'.$categoryId}}" @if(old('category') == '{{$subCategory}}') selected @endif>{{$subCategory}}</option>
                                     @endforeach
                                 @endforeach

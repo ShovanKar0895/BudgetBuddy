@@ -10,6 +10,7 @@ use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\UTCDateTime;
 
 class AccountController extends Controller
 {
@@ -49,6 +50,7 @@ class AccountController extends Controller
         
         $userId = Auth::id();
         $validatedData = $request->validated();
+        $validatedData['dob'] = new UTCDateTime(strtotime($validatedData['dob'])*1000);
 
         $affectedUsers = $this->userService->update($validatedData,$userId);
         

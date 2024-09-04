@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use MongoDB\BSON\ObjectId;
+use MongoDB\BSON\UTCDateTime;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -47,7 +49,7 @@ class UserFactory extends Factory
             'marital_status' => null,
             'qualification' => null,
             'occupation' => null,
-            'added_time' => $randomTimestamp,
+            'added_time' => new UTCDateTime($randomTimestamp*1000),
             'last_updated_time' => null,
             'status' => '1'
         ];
